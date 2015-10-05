@@ -1,0 +1,6 @@
+.project
+*.iml
+*.ipr
+.idea
+*.iws
+*.DS_Store
