@@ -1,17 +1,12 @@
-FROM ubuntu:vivid
+FROM jpcaruana/carton
+MAINTAINER Jean-Philippe Caruana jp@barreverte.fr
 
-RUN apt-get update && apt-get upgrade --yes && apt-get install git --yes
-
-# install carton
-COPY cpan.config /root/.cpan/CPAN/MyConfig.pm
-RUN cpan Carton
-
-# create user
-RUN useradd lstu && groupadd lstu && mkdir /var/www/lstu && chown -R lstu:lstu /var/www/lstu
+RUN apt-get install git --yes
 
 # install LSTU
-RUN git clone https://git.framasoft.org/luc/lstu.git /var/www/lstu && chown lstu:lstu -R /var/www/lstu
-RUN cd /var/www/lstu && su -u lstu carton install
+RUN mkdir -p /var/ww && git clone https://git.framasoft.org/luc/lstu.git /var/www/lstu && \
+    cd /var/www/lstu && git checkout 0.06 && \
+      echo "installing LSTU dependancies" && carton install
 COPY lstu.conf /var/www/lstu/lstu.conf
 COPY run.sh /run.sh
 
